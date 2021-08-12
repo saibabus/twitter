@@ -1,0 +1,31 @@
+POST http://localhost:3000/register/
+Content-Type: application/json
+
+{
+    "username":"saibabu",
+    "password":"saibabu@123",
+    "name":"s saibabu",
+    "gender":"male"
+}
+
+###
+
+POST http://localhost:3000/login/
+Content-Type: application/json
+
+{
+    "username":"JoeBiden",
+    "password":"biden@123"
+}
+
+###
+
+GET http://localhost:3000/user/tweets/feed/
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Sm9lQmlkZW4.sh9Vi99KBfV3OVVMN9hYrUVZtnJ9IPqo_2TEAIUq8Nc
+###
+
+
+GET http://localhost:3000/user/followers/
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.Sm9lQmlkZW4.sh9Vi99KBfV3OVVMN9hYrUVZtnJ9IPqo_2TEAIUq8Nc
+###
+
