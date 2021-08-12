@@ -105,6 +105,15 @@ app.get("/user/tweets/feed/", authentication, async (request, response) => {
   response.send(gettweetsis.map((each) => tweetdataformat(each)));
 });
 
+app.get("/user/following", authentication, async (request, response) => {
+  let { username } = request;
+  //console.log(username);
+  const getfollowingfetch = `select name  from user where user_id in (select follower_user_id from user left join follower on follower.following_user_id = user.user_id where username = '${username}');`;
+  const getfollowingis = await database.all(getfollowingfetch);
+  response.send(getfollowingis);
+  //response.send(getfolloweris.map((each) => tweetdataformat(each)));
+});
+
 app.get("/user/followers", authentication, async (request, response) => {
   let { username } = request;
   //console.log(username);
@@ -112,4 +121,18 @@ app.get("/user/followers", authentication, async (request, response) => {
   const getfolloweris = await database.all(getfollowerfetch);
   response.send(getfolloweris);
   //response.send(getfolloweris.map((each) => tweetdataformat(each)));
+});
+
+app.get("/tweets/:tweetId/", authentication, async (request, response) => {
+  let { username } = request;
+  const { tweetId } = request.params;
+  const gettweetfetch = `select tweet_id from tweet left join user on tweet.user_id = user.user_id where user.user_id in (select following_user_id from follower left join user on follower.follower_user_id = user.user_id where username = '${username}') order by tweet.date_time desc;`;
+  const gettweetsis = await database.all(gettweetfetch);
+  response.send(gettweetsis);
+  let tweetlist = [];
+  for (let each of gettweetsis) {
+    tweetlist.push(each.tweet_id);
+  }
+  const tweetIdmatch = tweetlist.some((eachis) => eachis === tweetId);
+  console.log(tweetIdmatch);
 });
